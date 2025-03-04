@@ -1,6 +1,6 @@
 apiVersion: networking.k8s.io/v1
 kind: IngressClass
 metadata:
-  name: neta-aviv-new
+  name: neta-aviv-new # Modify to your name space 
 spec:
   controller: k8s.io/ingress-nginx
