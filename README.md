@@ -1,131 +1,113 @@
+# Neta's Final Project - WordPress Deployment on Kubernetes using helm!
 
-# Neta's Project: WordPress Deployment on Kubernetes
-
-This repository contains Kubernetes manifests for deploying a WordPress application with a MariaDB database on an AWS EKS cluster.
+This project provides a Helm chart for deploying a WordPress application with a MySQL database and monitoring in grafana on a Kubernetes cluster.
 
 ## Prerequisites
-Ensure the following are installed and configured:
-- Kubernetes (Minikube or AWS EKS)
-- kubectl
-- helm
-- AWS CLI (to connect to AWS EKS)
+
+Before you start, make sure you have:
+- A running Kubernetes cluster (Minikube, EKS, or any other Kubernetes provider)
+- Helm installed
+- kubectl installed and configured
 - Git
+  
+## Installation Steps
 
+### 1. Add the Kubernetes Context
+Ensure you are connected to the correct Kubernetes cluster:
 
-## 1. Clone the Repository
-Clone the repository to your local machine:
-
-```bash
-git clone https://github.com/NetaAviv/final-project-eks.git
-cd final-project-eks
+```sh
+kubectl config current-context  # Check current cluster
+kubectl get nodes  # Verify cluster is running
 ```
 
+### 2. Download and Extract the Helm Chart
 
-## 2. Create a storage class if needed
+Clone this repository or download the `.tgz` Helm package:
 
-```bash
-kubectl apply -f storage-class.yaml -n [enter your namespace here]
+```sh
+git clone https://github.com/NetaAviv/Final-project-kubernetes.git
+cd Final-project-kubernetes
 ```
 
+### 3️⃣ Install the Helm Chart
 
-## 3. Create PVCs
+Run the following command to deploy the application:
 
-```bash
-kubectl apply -f mysql-pvc-neta.yaml -n [enter your namespace here]
-kubectl apply -f wordpress-pvc.yaml -n [enter your namespace here]
+```sh
+helm install my-wordpress my-wordpress-app-for-helm-0.1.0.tgz
 ```
 
+This will install:
+- MySQL as a StatefulSet with a Persistent Volume
+- WordPress as a Deployment with Persistent Storage
+- Kubernetes Services to expose MySQL and WordPress
+- An Ingress resource for external access (if configured)
 
-## 4. Deploy MariaDB
+### 4️⃣ Verify the Deployment
 
+Check if the pods, services, and ingress are running:
 
-
-```bash
-kubectl apply -f mysql-statefulset.yaml -n [enter your namespace here]
+```sh
+kubectl get pods
+kubectl get svc
+kubectl get ingress
 ```
 
+### 5️⃣ Access the WordPress Site
 
+If you have an Ingress controller set up, get the external URL:
 
-## 5. Deploy WordPress
-
-
-
-```bash
-kubectl apply -f wordpress-deployment.yaml -n [enter your namespace here]
+```sh
+kubectl get ingress
 ```
 
+If using NodePort, find the exposed port:
 
-## 6. Deploy the Application
-
-### We have two options:
- - Ingress
- - LB
-
-I recommand using ingress so that we could easily access our grafana page in the future using Path-based routing
-
-
-### Ingress= Set Up Ingress
-```bash
-helm install [name of your new ingress] ingress-nginx/ingress-nginx --namespace [enter your namespace here] --set controller.ingressClassResource.name=[name your ingress class] -f values.yaml
-kubectl apply -f wordpress-service.yaml -n [enter your namespace here]
-kubectl apply -f ingress.yaml -n [enter your namespace here]
-```
-### LB
-```bash
-echo "  type: LoadBalancer" >> wordpress-service.yaml
-kubectl apply -f wordpress-service.yaml -n [enter your namespace here]
-```
-to view the lb: 
-```bash
-kubectl get service | grep wordpress-service
+```sh
+kubectl get svc my-wordpress -o=jsonpath='{.spec.ports[0].nodePort}'
 ```
 
+Then, access WordPress in your browser using `http://<your-cluster-ip>:<NodePort>`
 
-## 7. Verify Deployment
+## Uninstalling the Helm Chart
 
+To delete the deployment and free resources:
 
-Check the status of your resources:
-
-```bash
-kubectl get pods -n [enter your namespace here]
-kubectl get services -n [enter your namespace here]
+```sh
+helm uninstall my-wordpress
 ```
 
+## Customizing the Deployment
 
-## 8. Install helm for grafana and prometheus:
+Modify the `values.yaml` file before installing to change settings like:
+- **MySQL Passwords**
+- **Storage Class**
+- **Replica Counts**
+- **Ingress Configuration**
 
+Then install using:
 
-```bash
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
-```
-```bash
-helm install [RELEASE_NAME] prometheus-community/kube-prometheus-stack
-```
-
-
-## 9. Accessing the WordPress Application- if you used ingress
-
-Retrieve the external URL of your application:
-
-```bash
-kubectl get ingress -n [enter your namespace here]
+```sh
+helm install my-wordpress -f values.yaml my-wordpress-app-for-helm-0.1.0.tgz
 ```
 
-Look for the `HOSTS` column, which will show you a URL
+## Troubleshooting
 
-In your browser:
-
-- **To view WordPress**: http://host-url/
-- **To view Grafana**: http://host-url/grafana
-
-
-
-## 10. Cleanup
-To delete all resources:
-
-```bash
-kubectl delete namespace [enter your namespace here]
-```
+- Check logs if pods are failing:
+  ```sh
+  kubectl logs -l app=wordpress
+  kubectl logs -l app=mysql
+  ```
+- Describe failing pods for errors:
+  ```sh
+  kubectl describe pod <pod-name>
+  ```
+- If ingress is not working, ensure the NGINX Ingress Controller is installed:
+  ```sh
+  kubectl get pods -n kube-system | grep ingress
+  ```
 
 ---
+
+Now your WordPress app should be up and running on Kubernetes using Helm! 
+
