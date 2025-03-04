@@ -1,6 +1,7 @@
+# Run kubectl apply -f storage-class.yaml to create a new storage class for you using this file!
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: neta
-provisioner: ebs.csi.aws.com
+  name: neta #Change to whatever name you want
+provisioner: ebs.csi.aws.com 
 volumeBindingMode: WaitForFirstConsumer
