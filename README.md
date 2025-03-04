@@ -71,9 +71,9 @@ If you have an Ingress controller set up, get the external URL:
 kubectl get ingress
 ```
 
-WordPress: http://<url>/
+WordPress: http://url/
 
-Grafana: http://<url>/grafana
+Grafana: http://url/grafana
 
 If using NodePort, find the exposed port:
 
