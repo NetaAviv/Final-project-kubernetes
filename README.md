@@ -30,9 +30,11 @@ cd Final-project-kubernetes
 ```
 ### 3. Customizing the Deployment
 
-Modify the `values.yaml` file before installing to change settings like:
+Requierd: Configure the following in the `values.yaml` file before installing:
 - **MySQL Passwords**
-- **Storage Class**
+- **Namespace**
+- **Storage Class** - (you can create one using my storage-class.yaml if you dont alreay have one)
+- **Storage Size**
 - **Replica Counts**
 - **Ingress Configuration**
 
@@ -68,6 +70,9 @@ If you have an Ingress controller set up, get the external URL:
 ```sh
 kubectl get ingress
 ```
+Access Applications:
+WordPress: http://<url>/
+Grafana: http://<url>/grafana
 
 If using NodePort, find the exposed port:
 
