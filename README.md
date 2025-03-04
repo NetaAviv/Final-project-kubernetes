@@ -37,6 +37,7 @@ Requierd: Configure the following in the `values.yaml` file before installing:
 - **Storage Size**
 - **Replica Counts**
 - **Ingress Configuration**
+- **wordpress: service type** (right now it is set to be CLusterIP can be change to loand balancer if needed)
 
 
 ### 4. Install the Helm Chart
