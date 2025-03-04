@@ -63,15 +63,16 @@ kubectl get svc
 kubectl get ingress
 ```
 
-### 6. Access the WordPress Site
+### 6. Access the Application
 
 If you have an Ingress controller set up, get the external URL:
 
 ```sh
 kubectl get ingress
 ```
-Access Applications:
+
 WordPress: http://<url>/
+
 Grafana: http://<url>/grafana
 
 If using NodePort, find the exposed port:
