@@ -33,11 +33,11 @@ cd Final-project-kubernetes
 Requierd: Configure the following in the `values.yaml` file before installing:
 - **MySQL Passwords**
 - **Namespace**
-- **Storage Class** - (you can create one using my storage-class.yaml if you dont alreay have one)
+- **Storage Class** - (you can create one using my storage-class.yaml if you dont already have one)
 - **Storage Size**
 - **Replica Counts**
 - **Ingress Configuration**
-- **wordpress: service type** (right now it is set to be CLusterIP can be change to loand balancer if needed)
+- **wordpress: service type** (right now it is set to be CLusterIP can be changed to loand balancer if needed)
 
 
 ### 4. Install the Helm Chart
