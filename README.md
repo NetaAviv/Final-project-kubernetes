@@ -28,8 +28,16 @@ Clone this repository or download the `.tgz` Helm package:
 git clone https://github.com/NetaAviv/Final-project-kubernetes.git
 cd Final-project-kubernetes
 ```
+### 3. Customizing the Deployment
 
-### 3️⃣ Install the Helm Chart
+Modify the `values.yaml` file before installing to change settings like:
+- **MySQL Passwords**
+- **Storage Class**
+- **Replica Counts**
+- **Ingress Configuration**
+
+
+### 4. Install the Helm Chart
 
 Run the following command to deploy the application:
 
@@ -43,7 +51,7 @@ This will install:
 - Kubernetes Services to expose MySQL and WordPress
 - An Ingress resource for external access (if configured)
 
-### 4️⃣ Verify the Deployment
+### 5. Verify the Deployment
 
 Check if the pods, services, and ingress are running:
 
@@ -53,7 +61,7 @@ kubectl get svc
 kubectl get ingress
 ```
 
-### 5️⃣ Access the WordPress Site
+### 6. Access the WordPress Site
 
 If you have an Ingress controller set up, get the external URL:
 
@@ -69,7 +77,7 @@ kubectl get svc my-wordpress -o=jsonpath='{.spec.ports[0].nodePort}'
 
 Then, access WordPress in your browser using `http://<your-cluster-ip>:<NodePort>`
 
-## Uninstalling the Helm Chart
+### 7. When finised- Uninstalling the Helm Chart
 
 To delete the deployment and free resources:
 
@@ -77,19 +85,6 @@ To delete the deployment and free resources:
 helm uninstall my-wordpress
 ```
 
-## Customizing the Deployment
-
-Modify the `values.yaml` file before installing to change settings like:
-- **MySQL Passwords**
-- **Storage Class**
-- **Replica Counts**
-- **Ingress Configuration**
-
-Then install using:
-
-```sh
-helm install my-wordpress -f values.yaml my-wordpress-app-for-helm-0.1.0.tgz
-```
 
 ## Troubleshooting
 
